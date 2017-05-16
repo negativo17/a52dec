@@ -1,7 +1,7 @@
 Summary:    Small test program for liba52
 Name:       a52dec
 Version:    0.7.4
-Release:    25%{?dist}
+Release:    27%{?dist}
 License:    GPLv2
 URL:        http://liba52.sourceforge.net
 Source0:    %{url}/files/%{name}-%{version}.tar.gz
@@ -17,6 +17,11 @@ Obsoletes:  %{name} < 0.7.4-23
 
 %package -n liba52
 Summary:    A free ATSC A/52 stream decoder, also known as AC-3 or AC3
+#Fix multilibs transition - introduced in f26
+Obsoletes:  a52dec < 0.7.4-25
+#Fix others 3rd part repos transition
+Obsoletes:  a52dec-libs < 0.7.4-25
+Provides:   a52dec-libs = %{version}-%{release}
 
 %package -n liba52-devel
 Summary:    Development files for liba52
@@ -39,6 +44,7 @@ developing applications that use liba52-devel.
 
 %prep
 %autosetup -p1
+
 sed -i -e 's/-prefer-non-pic/-prefer-pic/' \
   configure liba52/configure.incl
 
@@ -82,6 +88,12 @@ done
 
 
 %changelog
+* Tue Apr 04 2017 Nicolas Chauvet <kwizart@gmail.com> - 0.7.4-27
+- Fix others 3rd part repos
+
+* Thu Mar 30 2017 Nicolas Chauvet <kwizart@gmail.com> - 0.7.4-26
+- Fix multilibs transition
+
 * Tue Mar 21 2017 Nicolas Chauvet <kwizart@gmail.com> - 0.7.4-25
 - Fixup Obsoletes/Provides for the devel
 - Use sed instead of perl to avoid a build dependency
